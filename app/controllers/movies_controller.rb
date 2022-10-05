@@ -18,7 +18,6 @@ class MoviesController < ApplicationController
     
     if session[:ratings].nil?
       session[:ratings] = []
-      # session[:ratings] = Hash[@all_ratings.map {|v| [v, 1]}]
     else
       session[:ratings] = session[:ratings]
     end
@@ -36,12 +35,12 @@ class MoviesController < ApplicationController
     else
       session[:sort] = ""
     end
-    @sort_method = session[:sort]
+    @sort_by = session[:sort]
     
     if redirect
-      redirect_to movies_path({:sort=> @sort_method, :ratings=>@ratings_to_show})
+      redirect_to movies_path({:sort=> @sort_by, :ratings=>@ratings_to_show})
     end
-    @movies = Movie.with_ratings(@ratings_to_show.keys).order(@sort_method)
+    @movies = Movie.with_ratings(@ratings_to_show.keys).order(@sort_by)
 
   end
 
