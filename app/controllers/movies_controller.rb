@@ -17,7 +17,8 @@ class MoviesController < ApplicationController
     end
     
     if session[:ratings].nil?
-      session[:ratings] = Hash[@all_ratings.map {|v| [v, 1]}]
+      session[:ratings] = []
+      # session[:ratings] = Hash[@all_ratings.map {|v| [v, 1]}]
     else
       session[:ratings] = session[:ratings]
     end
