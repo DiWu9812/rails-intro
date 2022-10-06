@@ -14,39 +14,31 @@ class MoviesController < ApplicationController
       redirect = true
       @ratings_to_show = Hash[@all_ratings.collect {|r| [r, 1]}]
     else
-      @ratings_to_show = params[:ratings]
-    # else
-    #   session[:ratings] = params[:ratings]
+      session[:ratings] = params[:ratings]
     end
     
-    # if session[:ratings].nil?
-    #   session[:ratings] = []
-    # else
-    #   session[:ratings] = session[:ratings]
-    # end
-  
-    # @ratings_to_show = session[:ratings]
-    
-    # if params[:sort]
-    #   session[:sort] = params[:sort]
-    # else
-    #   redirect = true
-    # end
+    if session[:ratings].nil?
+      session[:ratings] = Hash[@all_ratings.collect {|r| [r, 1]}]
+    else
+      session[:ratings] = session[:ratings]
+    end
 
-    if params[:sort].nil? #####
+    @ratings_to_show = session[:ratings]
+
+    if params[:sort].nil? 
       redirect = true
       @sort_by = ""
     else
-      @sort_by = params[:sort]
+      session[:sort] = params[:sort]
     end
     
-    # if session[:sort]
-    #   session[:sort] = session[:sort]
-    # else
-    #   session[:sort] = ""
-    # end
+    if session[:sort]
+      session[:sort] = session[:sort]
+    else
+      session[:sort] = ""
+    end
 
-    # @sort_by = session[:sort]
+    @sort_by = session[:sort]
     
     if redirect
       redirect_to movies_path({:sort=> @sort_by, :ratings=>@ratings_to_show})
