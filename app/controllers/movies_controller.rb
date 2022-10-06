@@ -10,10 +10,9 @@ class MoviesController < ApplicationController
     # @movies = Movie.all
     @all_ratings = Movie.all_ratings
     redirect = false
-    first = true
     if params[:ratings].nil?
       redirect = true
-      @ratings_to_show = Hash[@all_ratings.map {|r| [r, 1]}]
+      @ratings_to_show = Hash[@all_ratings.collect {|r| [r, 1]}]
     else
       @ratings_to_show = params[:ratings]
     # else
@@ -34,12 +33,12 @@ class MoviesController < ApplicationController
     #   redirect = true
     # end
 
-    # if params[:sort].nil? #####
-    #   redirect = true
-    #   @sort_by = params[]
-    # else
-    #   @sort_by = params[:sort]
-    # end
+    if params[:sort].nil? #####
+      redirect = true
+      @sort_by = ""
+    else
+      @sort_by = params[:sort]
+    end
     
     # if session[:sort]
     #   session[:sort] = session[:sort]
@@ -49,14 +48,11 @@ class MoviesController < ApplicationController
 
     # @sort_by = session[:sort]
     
-    if redirect and !first
-      first = false
-      redirect_to movies_path({:ratings=>@ratings_to_show})
-      # redirect_to movies_path({:sort=> @sort_by, :ratings=>@ratings_to_show})
+    if redirect
+      redirect_to movies_path({:sort=> @sort_by, :ratings=>@ratings_to_show})
     end
     
-    @movies = Movie.with_ratings(@ratings_to_show.keys)
-    # @movies = Movie.with_ratings(@ratings_to_show.keys).order(@sort_by)
+    @movies = Movie.with_ratings(@ratings_to_show.keys).order(@sort_by)
 
   end
 
